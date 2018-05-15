@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>飞机大战</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+		<meta content="yes" name="apple-mobile-web-app-capable"/>
+		<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+		<meta content="telephone=no" name="format-detection"/>
+		<link rel="stylesheet" href="css/swiper-3.4.2.min.css" />
+		<link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet" href="css/index.css"/>
+		<script>
+            (function(doc, win) {
+                var docEl = doc.documentElement,
+                    resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+                    recalc = function() {
+                        var clientWidth = docEl.clientWidth;
+                        if(!clientWidth) return;
+                        if(clientWidth >= 750) {
+                            docEl.style.fontSize = '100px';
+                        } else {
+                            docEl.style.fontSize = 100 * (clientWidth / 750) + 'px';
+                        }
+                    };
+
+                if(!doc.addEventListener) return;
+                win.addEventListener(resizeEvt, recalc, false);
+                doc.addEventListener('DOMContentLoaded', recalc, false);
+            })(document, window);
+		</script>
+		<script src="js/swiper-3.4.2.min.js"></script>
+		<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+		<script type="text/javascript" src="js/lufylegend-1.10.1.min.js" ></script>
+		<script src="js/vue.min.js"></script>
+	</head>
+	<body>
+		<div class="delete1">
+		<div id="app">
+			<!--加载页-->
+			<div id="loading" v-if="pageIndex==0">
+				<img src="img/loadBkg.png" />
+				<div class="loading">
+					<div class="load1">
+						<img src="img/load1.png" />
+					</div>
+					<div class="load2">
+						<div></div>
+					</div>
+					<div class="load3">
+						<p>0%</p>
+					</div>
+				</div>
+			</div>
+			<!--故事情节-->
+			<div id="story" class="pw" v-if="pageIndex==4">
+				<div class="story1">
+					<img src="img/story1.png" class="img"/>
+				</div>
+				<div class="story2">
+					<img src="img/story2.png" class="img"/>
+
+				</div>
+				<div class="story3">
+					<img src="img/story3.png" class="img"/>
+					<div class="story4">
+						<img src="img/story4.png" class="img"/>
+					</div>
+				</div>
+				<div class="story5">
+					<img src="img/story5.png" class="img"/>
+				</div>
+				<div class="story6">
+					<img src="img/story6.png" class="img"/>
+					<div class="story61">
+						<img src="img/story6.png" />
+					</div>
+					<div class="story62">
+						<img src="img/story7.png" />
+					</div>
+				</div>
+			</div>
+			<!--首页-->
+			<div id="homepage" v-if="pageIndex==1">
+				<div class="pg0">
+					<img src="img/index8.png" class="img" />
+				</div>
+				<div class="pg1 animated bounceInDown" >
+					<img src="img/index2.png" class="img" />
+				</div>
+				<div class="pg2  animated bounceIn">
+					<img src="img/index7.png" class="img" />
+				</div>
+				<a href="###" class="pg3  animated fadeInDown" @touchStart="startBtn">
+					<img src="img/indexBtn3.png" />
+				</a>
+				<a href="###" class="pg5  animated fadeInLeft" @touchStart="pageIndex=2">
+					<img src="img/indexBtn1.png" />
+				</a>
+				<a href="###" class="pg4  animated fadeInRight" @touchStart="showRules">
+					<img src="img/indexBtn2.png" />
+				</a>
+				<div class="pg6">
+					<img src="img/index6.png" class="img" />
+				</div>
+				<div class="pg7">
+					<img src="img/index4.png" class="img" />
+				</div>
+				<div class="pg8">
+					<img src="img/index5.png" class="img" />
+				</div>
+				<div class="pg9  animated bounceIn">
+					<img src="img/index3.png" class="img" />
+				</div>
+			</div>
+			<!--我的礼品和积分商城-->
+			<div id="giftAndShop" class="pw" v-if="pageIndex==2">
+				<div class="myScore">
+					<img src="img/gift1.png"/>
+					<div class="sText">
+						<p>{{wxScore}}</p>
+					</div>
+				</div>
+				<div class="gsButton">
+					<img v-if="giftShopIndex==0" src="img/gift2.png"/>
+					<img v-else="giftShopIndex==1" src="img/gift8.png"/>
+					<button class="showGift" @touchStart="giftShopIndex=0"></button>
+					<button class="showShop" @touchStart="giftShopIndex=1"></button>
+				</div>
+				<div class="giftBox">
+					<img src="img/gift3.png"  class="img"/>
+					<!--我的礼品-->
+					<div class="giftArea" :class="{noGift:mygifts.length==0}" v-if="giftShopIndex==0">
+						<div class="mgBox" v-for="(item, index) in mygifts">
+							<div class="mgleft">
+								<img :src="item.giftSrc"  class="img"/>
+							</div>
+							<div class="mgRight">
+								<p>{{item.content}}</p>
+							</div>
+							<a href="###" v-if="item.status==0" @touchStart="addressShow=1,giftIndex=0"><img src="img/gift6.png"/></a>
+							<a href="###" v-else="item.status==1"><img src="img/gift7.png" @touchStart="lookDetails(mygifts[index].giftSrc,mygifts[index].content,mygifts[index].name,mygifts[index].phone,mygifts[index].address,mygifts[index].msg)"/></a>
+						</div>
+					</div>
+					<!--积分商城-->
+					<div class="giftArea"  v-if="giftShopIndex==1">
+						<div class="mgBox" v-for="(item, index) in allGifts">
+							<div class="mgleft">
+								<img :src="item.giftSrc"  class="img"/>
+							</div>
+							<div class="mgRight">
+								<p>{{item.content}}</p>
+								<p>兑换积分：{{item.giftscore}}</p>
+								<p>剩余数量：{{item.giftNumber}}</p>
+							</div>
+							<a href="###" v-if="item.giftNumber>0"  @touchStart="addressShow=1,giftIndex=1"><img src="img/gift9.png"/></a>
+						</div>
+					</div>
+
+				</div>
+				<a herf="###" class="backHome"><img src="img/gift10.png" @touchStart="pageIndex=1"/> </a>
+			</div>
+			<!--显示填写地址-->
+			<iframe src="address.html" id="addressFrame" class="pw" v-if="addressShow==1"></iframe>
+			<!--显示摇奖-->
+			<iframe src="award.html" id="awardFrame" class="pw" v-show="pageIndex==6"></iframe>
+			<!--选择英雄-->
+			<div id="choice" class="pw" v-show="pageIndex==5">
+				<div class="choiceTitle animated bounceInDown">
+					<img src="img/choice1.png"/>
+				</div>
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<div class="choiceBox">
+								<img src="img/choice3.png" />
+								<div class="choiceBoxIn">
+									<img src="img/choice6.png" />
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="choiceBox">
+								<img src="img/choice3.png" />
+								<div class="choiceBoxIn">
+									<img src="img/choice7.png" />
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="choiceBox">
+								<img src="img/choice3.png" />
+								<div class="choiceBoxIn">
+									<img src="img/choice8.png" />
+								</div>
+							</div>
+						</div>
+						<div class="swiper-slide">
+							<div class="choiceBox">
+								<img src="img/choice3.png" />
+								<div class="choiceBoxIn">
+									<img src="img/choice9.png" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-button-prev"></div>
+					<div class="swiper-button-next"></div>
+				</div>
+				<a href="###" class="confirm animated fadeInUp"><img src="img/choice2.png"/></a>
+			</div>
+			<div id="plane" v-show="pageIndex==3"></div>
+		</div>
+
+		<audio id="bomb" src="music/bomb.mp3" hidden="hidden" preload ></audio>
+		<audio id="bg" src="music/sound-bg.mp3" hidden="hidden" loop="loop" autoplay="autoplay" preload ></audio>
+		<audio id="three" src="music/three.wav" hidden="hidden"  preload ></audio>
+		<audio id="zero" src="music/zero.wav" hidden="hidden"  preload ></audio>
+		<img src="img/music.png" id="music">
+		<script>
+            $('.img').on('click',function () {
+				return false;
+            })
+
+		</script>
+		<script  type="text/javascript" src="js/resource.js"></script>
+		<script  type="text/javascript" src="js/popWin.js"></script>
+		<script  type="text/javascript" src="js/main.js"></script>
+		<script  type="text/javascript" src="js/class.js"></script>
+		<script  type="text/javascript" src="js/bemGame.js"></script>
+		<script>
+				
+            //微信加入聊天
+            function audioAutoPlay(id,v){
+                var audio = document.getElementById(id);
+                audio.play();
+                if(v==0)
+                {
+                    audio.pause();
+                }
+                document.addEventListener("WeixinJSBridgeReady", function () {
+                    audio.play();
+                    if(v==0)
+                    {
+                        audio.pause();
+                    }
+                }, false);
+            }
+            //数据对接
+            var app =  new Vue({
+                el: '#app',
+                data: {
+                	links:"https://www.baidu.com/",
+                	awardIndex:0,
+                    mySwiper:0,
+                    addressShow:0,//显示填写地址弹窗
+                    pageIndex:0,//0为加载页 1为首页 2积分商城+我的礼品 3为游戏页 4为故事页 5为选择英雄 6为摇奖页面
+					wxScore:100000, //我的积分
+					giftShopIndex:0,//默认我的礼品页面
+					giftIndex:0,
+					choicePerson:0,//默认为美国队长
+					mygifts:[{
+                        "giftSrc":"img/gift5.png",
+						"content":"价值XX元的抱枕",
+						"status":0
+					},{
+                        "giftSrc":"img/gift5.png",										//礼品图片路径
+                        "content":"价值XX元的抱枕,价值XX元的抱枕",							//礼品名称
+                        "status":1,														//领取状态 0为未领取 1为已领取转变为查看状态
+						"name":"邱梓佳",													//姓名
+						"phone":"15999911956",											//电话
+						"address":"广州市海珠区琶洲新村蟠龙新街琶洲街道11栋710恒帝科技",		//地址
+						"msg":"广州市海珠区"												//留言
+					}],
+                    allGifts:[{
+                        "giftSrc":"img/gift5.png",				//商城礼品图片路径
+                        "content":"价值XX元的抱枕",				//商城礼品名称
+                        "giftscore":200000,						//商城积分
+						"giftNumber":1000						//剩余数量
+                    },{
+                        "giftSrc":"img/gift5.png",				//商城礼品图片路径
+                        "content":"价值XX元的抱枕，价值XX元",		//商城礼品名称
+                        "giftscore":200000,						//商城积分
+                        "giftNumber":1000						//剩余数量
+                    }]
+				},
+                methods:{
+                    //开始游戏
+                    startBtn :function(){
+                        var self = this;
+
+                        self.pageIndex = 5;
+						// gameTips();
+						setTimeout(function () {
+						    if(self.mySwiper==0)
+							{
+                                self.mySwiper = new Swiper ('.swiper-container', {
+                                    // 如果需要前进后退按钮
+                                    nextButton: '.swiper-button-next',
+                                    prevButton: '.swiper-button-prev',
+                                    onInit: function(swiper){
+                                        $('.swiper-button-next').on('touchstart',function () {
+                                            swiper.slideNext(1000);
+                                        });
+                                        $('.swiper-button-prev').on('touchstart',function () {
+                                            swiper.slidePrev(1000);
+                                        });
+                                        $('.confirm').on('touchstart',function () {
+                                            self.pageIndex = 3;
+                                            gameTips();
+                                            gameStart();
+                                        });
+                                    },
+                                    onSlideChangeEnd: function(swiper){
+                                        app.choicePerson = swiper.activeIndex;
+                                    }
+                                });
+							}
+
+                        },100);
+					},
+                    //显示规则
+                    showRules:function(){
+						$('#rule').remove();
+						var html = "";
+						html += '<div id="rule" class="pw mask">';
+						html += '<div class="rule1 animated fadeInDown">';
+						html += '<img src='+url+'"img/rule2.png" class="img"/><div class="ruleTitle">';
+						html += '<img src='+url+'"img/rule1.png" /></div></div><a href="###" class="closeRule animated fadeInUp"><img src="img/close.png"/></a></div>';
+						$('body').append(html);
+						$('#rule .closeRule').on('touchstart',function () {
+                            $('#rule .rule1').removeClass('animated fadeInDown');
+							$('#rule .rule1').addClass('animated bounceOut');
+                            $('#rule .closeRule').addClass('animated fadeOutDown');
+                            setTimeout(function () {
+                                $('#rule').remove();
+                            },900);
+                        });
+					},
+					
+					//查看详情
+					lookDetails:function(src,content,name,phone,address,msg){
+                        $('#lookAddress').remove();
+                        var html = "";
+                        html += '<div id="lookAddress" class="pw mask"><div class="lookAddress animated bounceInDown"><img src="img/person.png" />';
+                        html += '<div><ul><li class="liImg"><img src="'+src+'"/></li>';
+                        html += '<li class="giftContent"><p>'+content+'</p></li>';
+                        html += '<li class="liTitle"><img src="img/person1.png"/></li>';
+                        html += '<li><p>姓名：'+name+'</p></li>';
+                        html += '<li><p>手机：'+phone+'</p></li>';
+                        html += '<li><p>地址：'+address+'</p></li>';
+                        html += '<li><p>留言：'+msg+'</p></li>';
+                        html += '<li class="tips"><p>注：活动结束后礼品由总部统一，请注意查收！</p></li></ul></div></div>';
+                        html += '<a href="###" class="closeLook animated fadeInUp"><img src="img/close.png"/></a></div>';
+                        $('body').append(html);
+                        $('#lookAddress .closeLook').on('touchstart',function () {
+                            $('#lookAddress .lookAddress').addClass('animated bounceOut');
+                            $('#lookAddress .closeLook').addClass('animated fadeOutDown');
+                            setTimeout(function () {
+                                $('#lookAddress').remove();
+                            },900);
+                        });
+					}
+
+				}
+            });
+            audioAutoPlay('bomb',0);
+            audioAutoPlay('three',0);
+            audioAutoPlay('zero',0);
+            audioAutoPlay('bg');
+
+		</script>
+		<div class="delete2"></div>
+	</body>
+</html>
