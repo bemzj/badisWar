@@ -87,6 +87,11 @@ function gameStart(){
     //得分面板
     scoreLayer = new LSprite();
     backLayer.addChild(scoreLayer);
+    scoreLayer.removeAllChild();
+    var scoreBack = getBitmap(imgList['gift1']);
+    scoreBack.x = 450;
+    scoreBack.y = 15;
+    scoreLayer.addChild(scoreBack);
 	//飞机层
    	palyLayer = new LSprite();
     palyLayer.die();
@@ -98,7 +103,7 @@ function gameStart(){
     player.y = 1206-player.getHeight()-20;
     palyLayer.addChild(player);
     ////////////////////////////////////////////-得分面板-//////////////////////////////////////////////////////
-    scoreText = new setText(640,30,30,'0',"#425ca7","true");
+    scoreText = new setText(520,30,30,'0',"#ffffff","true");
     backLayer.addChild(scoreText);
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     //细菌层
@@ -111,6 +116,8 @@ function gameStart(){
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////Boss操作/////////////////////////////////////////////////////
     bigBoss = new Boss(210,20);     //添加大boss
+    bigBoss.scaleX = 0.68;
+    bigBoss.scaleY = 0.68;
     bigBoss.y = -bigBoss.getHeight()*2; //纵位置y
     enemyLayer.addChild(bigBoss);
     var bigEFP = 0;
@@ -241,7 +248,7 @@ function gameStart(){
 			{
                 enemyLayer.removeEventListener(LEvent.ENTER_FRAME);
                 bossShow = true;
-                LTweenLite.to(bigBoss,0.5,{delay:0.5,y:20,onComplete:function () {
+                LTweenLite.to(bigBoss,0.5,{delay:0.5,y:100,onComplete:function () {
                 	timeBoss  = LTweenLite.to(bigBoss,1.0,{x:20,loop:true}).to(bigBoss,1.0,{x:400,loop:true});
                 	bigBoss.frame = true;
                 }});
