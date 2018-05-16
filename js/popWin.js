@@ -145,13 +145,13 @@ function shareSuccess(){
 	});
 }
 //获得礼物
-function getGameGift(){
+function getGameGift(src,text){
 	$('#giftPop').remove();
 	var html = "";
 	html += '<div id="giftPop" class="pw mask" style="z-index: 9999"><div class="giftPop animated bounceInDown">';
 	html += '<img src="img/getGift.png" class="img"/><div class="giftPopIn">';
 	html += '<div class="gp1"><img src="'+src+'" /></div><div class="gp2">';
-	html += '<p>免费获得一个</p><p>价值XX元的抱枕</p></div><div class="gp3">';
+	html += '<p>免费获得一个</p><p>'+text+'</p></div><div class="gp3">';
 	html += '<p>马上分享朋友圈，激活领取礼品！</p></div><div class="gp4">';
 	html += '<a href="###"><img src="img/share2.png"/></a></div></div></div></div>';
 	$('body').append(html);
