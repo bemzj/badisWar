@@ -33,7 +33,7 @@ $(function(){
 			callback:function (){
 				
 				//旋转完成调用的函数
-				parent.getGameGift('img/gift5.png','价值XX元的抱枕');
+				parent.getGameGift(txt.src,txt.text);
 				//开启旋转
 				turnplate.bRotate = !turnplate.bRotate;
 			}
@@ -46,7 +46,7 @@ $(function(){
 		turnplate.bRotate = !turnplate.bRotate;
 
 		
-
+		//ajax
 		$.get('json/award.json',function(data){
 			turnplate.randomRate = ["0%", '0%', '0%', '0%', '0%', '0%', '0%', '0%'];
 			//从后台请求获取数据设置对应的数组为100%

@@ -55,6 +55,7 @@ function showPop(id,txt,fun) {
 }
 //游戏成功
 function gameSuccess(score){
+	//score为分数
 	$('#success').remove();
 	var html = "";
 	html += '<div id="success" class="pw mask"><div class="success1 animated bounceInDown">';
@@ -66,6 +67,7 @@ function gameSuccess(score){
 	html += '<p>获得'+score+'积分与1次抽奖机会<br/>捍卫家园，保护家人健康<br/>你是位出色的除醛战士</p>';
 	html += '</div><div class="success4 animated fadeInUp"><a href="###"><img src="img/success5.png"/></a></div></div>';
 	$('body').append(html);
+    //ajax
 	$('#success .success4 a').one('touchstart',function(){
 		
 		app.pageIndex = 6;		
@@ -74,6 +76,8 @@ function gameSuccess(score){
 }
 //游戏失败
 function gameFail(score,links){
+    //score为分数
+	//links为产品专题链接
 	$('#fail').remove();
 	var html = "";
 	html +='<div id="fail" class="pw mask" ><div class="fail1 animated bounceInDown">';
@@ -85,6 +89,7 @@ function gameFail(score,links){
 	html +='<a href="###" class="floatr  animated fadeInRight"><img src="img/error3.png"/> </a>';
 	html +='</div><div class="fail5 animated fadeInUp"><a href="###"><img src="img/error5.png"/></a></div></div>';
 	$('body').append(html);
+	//ajax
 	//返回首页
 	$('.fail4 .floatl').one('touchstart',function(){
 		$('#fail').remove();
@@ -93,9 +98,13 @@ function gameFail(score,links){
 	//再次挑战
 	$('.fail4 .floatr').one('touchstart',function(){
         $('#fail').remove();
+        //如果成功
         gameStart();
         gameTips();
-
+		//不成功的话
+        // showPop(1,"机会用完",function () {
+         //    app.pageIndex = 1;
+        // });
 	});
 	//链接
 	$('.fail5 a').one('touchstart',function(){

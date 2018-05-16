@@ -42,28 +42,30 @@
                 <div class="addressTitle">
                     <img src="img/address1.png" class="img"/>
                 </div>
-                <ul>
-                    <li>
-                        <input type="text" placeholder="请输入您的姓名"/>
-                    </li>
-                    <li>
-                        <input type="text" placeholder="请输入您的手机号码"/>
-                    </li>
-                    <li>
-                        <input type="text" placeholder="请选择省市区" id="city"/>
-                    </li>
-                    <li class="textArea">
-                        <div>
-                            <textarea  placeholder="请输入详细地址"></textarea>
-                        </div>
-                    </li>
-                    <li class="textArea">
-                        <div>
-                            <textarea  placeholder="请输入120字内的内容"></textarea>
-                        </div>
-                    </li>
+                <form style="width: 100%;">
+                    <ul style="margin: 0 auto">
+                        <li>
+                            <input type="text" placeholder="请输入您的姓名"/>
+                        </li>
+                        <li>
+                            <input type="text" placeholder="请输入您的手机号码"/>
+                        </li>
+                        <li>
+                            <input type="text" placeholder="请选择省市区" id="city"/>
+                        </li>
+                        <li class="textArea">
+                            <div>
+                                <textarea  placeholder="请输入详细地址"></textarea>
+                            </div>
+                        </li>
+                        <li class="textArea">
+                            <div>
+                                <textarea  placeholder="请输入120字内的内容"></textarea>
+                            </div>
+                        </li>
 
-                </ul>
+                    </ul>
+                </form>
                 <a herf="###" class="submitAddress"><img src="img/address2.png"/></a>
             </div>
         </div>
@@ -96,12 +98,15 @@
         //提交
         $('.submitAddress').on('click',function () {
             showPop(2,"请您认真核对信息，如信息填写有误，将无法领取奖品！",function () {
+                //ajax 成功
+                // showPop(1,"收货信息已提交！<br/>请您耐心等待，谢谢！",function () {
+                //     window.parent.app.addressShow= 0;
+                // });
 
-                showPop(1,"收货信息已提交！<br/>请您耐心等待，谢谢！",function () {
-                    window.parent.app.addressShow= 0;
-                });
-
-
+                //失败
+               showPop(1,"网络错误",function () {
+                   window.parent.app.addressShow= 0;
+               });
 
 
             });
